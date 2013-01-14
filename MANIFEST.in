@@ -1,0 +1,2 @@
+include VERSION
+recursive-include todo_client *.js *.css *.png *.html
