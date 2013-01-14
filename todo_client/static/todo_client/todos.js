@@ -48,7 +48,7 @@ $(function(){
     // Save all of the todo items under the `"todos-backbone"` namespace.
     // localStorage: new Backbone.LocalStorage("todos-backbone"),
     // TODO: should be injected by configuration
-    url: '/rest/todo/',
+    url: cfg.rest_base + 'todo/',
 
     // Filter down the list of all todo items that are finished.
     done: function() {
