@@ -12,5 +12,5 @@ urlpatterns = patterns('',
     url(r'^$', direct_to_template,
         {'template': 'todo_client/index.html'}, name='client'),
 
-    url(r'^rest/', include('todo_client.urls')),
+    url(r'^rest/todo/', include('todo_api_piston.urls')),
 )
