@@ -7,6 +7,4 @@ Provies:
 
 * Admin interface
 
-* API views
-
 """
