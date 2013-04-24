@@ -1,0 +1,9 @@
+{% if message %}<p><strong>{{ message }}</strong></p>{% endif %}
+    
+<form action="{% url 'todo:update' todoitem.id %}" method="post">
+{% csrf_token %}
+    <br>Title <input type="text" name="title" value="{{ todoitem.title }}" /></br>
+    <br>Order <input type="number" name="order" value="{{ todoitem.order }}" /></br>
+    <br>Done  <input type="checkbox" name="done" {% if todoitem.done %} checked {% endif %}/></br>
+<input type="submit" value="Update" />
+</form>
