@@ -14,7 +14,7 @@ DATABASES = {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'ENGINE': 'django.db.backends.sqlite3',
         # TODO: Filename should be computed dynamically
-        'NAME': 'var/data.db',
+        'NAME': '/home/lnenov/data.db',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -129,6 +129,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'piston',
+    'django_nose',
 
     'todo',
     'todo_api',
@@ -193,3 +195,5 @@ LOGGING = {
         },
     }
 }
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
