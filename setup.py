@@ -16,7 +16,7 @@ setup(
     install_requires = [
         'distribute',
         # TODO: Make this work with Django 1.5 as well.
-        'django<1.5',
+        'django<=1.5',
         'django-piston',
         'south',
         ],

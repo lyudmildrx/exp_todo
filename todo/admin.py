@@ -1,4 +1,3 @@
-
 from django.contrib.admin import site
 from todo import models
 
