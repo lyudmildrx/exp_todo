@@ -1,5 +1,11 @@
+<div>
+    <h1>{{ todolist.title }}</h1>
+    {{ todolist.description }}
+    <div><a href="{% url 'todo:list_index' %}">See all lists</a>
+</div>
+
 <h1> Don't forget to make a note! </h1>
-<form action="{% url 'todo:create' %}" method="post">
+<form action="{% url 'todo:item_create' todolist.id %}" method="post">
 {% csrf_token %}
     <br>Title <input type="text" name="title" value="{{ todoitem.title }}" /></br>
     <br>Order <input type="number" name="order" value="{{ todoitem.order }}" /></br>
@@ -9,18 +15,16 @@
 
 <h1>Did you forget to</h1>
 {% if todos %}
-    <ul>
     {% for todo in todos %}
-        <div><a href="{% url 'todo:detail' todo.id %}">Order {{ todo.order }}: {{ todo.title }}</a>
+        <div><a href="{% url 'todo:item_detail' todo.id %}">Order {{ todo.order }}: {{ todo.title }}</a>
              <br>{% if todo.done %} Already Done {% else %} It is time to do this {% endif %}</br>
-             <br><a href="{% url 'todo:do' todo.id %}">Mark as done</a> | 
-                 <a href="{% url 'todo:delete' todo.id %}">Delete</a>
+             <br><a href="{% url 'todo:item_do' todo.id %}">Mark as done</a> | 
+                 <a href="{% url 'todo:item_delete' todo.id %}">Delete</a>
              </br>
         </div>
         <br></br>
         <br></br>
     {% endfor %}
-    </ul>
 {% else %}
     <p>No todo notes are available.</p>
 {% endif %} 

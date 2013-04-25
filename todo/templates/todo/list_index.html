@@ -1,0 +1,25 @@
+<h1> Do you need to make a new list? </h1>
+<form action="{% url 'todo:list_create' %}" method="post">
+{% csrf_token %}
+    <br>Title <input type="text" name="title" value="{{ todolist.title }}" /></br>
+    <br>Description<input type="text" name="description" value="{{ todolist.order }}" /></br>
+<input type="submit" value="Create" />
+</form>
+
+<h1>Do you want to take a look at older lists</h1>
+{% if todolists %}
+    <ul>
+    {% for list in todolists %}
+        <div><a href="{% url 'todo:item_index' list.id %}">{{ list.title }}</a>
+             <br>{{ list.description }}</br>
+             <br>{{ list.todoitem_set.count }}</br>
+             <br><a href="{% url 'todo:list_delete' list.id %}">Delete</a>
+             </br>
+        </div>
+        <br></br>
+        <br></br>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No todo lists are available.</p>
+{% endif %} 

@@ -1,21 +1,26 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import DetailView, ListView
-from todo.models import TodoItem
+from todo.models import TodoItem, TodoList
+
 
 urlpatterns = patterns('',
     url('^$',
         ListView.as_view(
-            queryset=TodoItem.objects.all().order_by('-order'),
-            context_object_name='todos',
-            template_name='todo/index.html'),
-        name='index'),
-    url(r'^(?P<pk>\d+)/$',
+            queryset=TodoList.objects.all().order_by('title'),
+            context_object_name='todolists',
+            template_name='todo/list_index.html'),
+        name='list_index'),
+    url(r'^/create/$', 'todo.views.list_create', name='list_create'),
+    url(r'^/delete/(?P<todolist_id>\d+)$', 'todo.views.list_delete', name='list_delete'),
+
+    url(r'^/(?P<todolist_id>\d+)/items/$', 'todo.views.item_index', name='item_index'),
+    url(r'^/items/(?P<pk>\d+)/$',
         DetailView.as_view(
             model=TodoItem,
-            template_name='todo/detail.html'),
-        name='detail'),
-    url(r'^(?P<todoitem_id>\d+)/update/$', 'todo.views.update', name='update'),
-    url(r'^/create/$', 'todo.views.create', name='create'),
-    url(r'^(?P<todoitem_id>\d+)/delete/$', 'todo.views.delete', name='delete'),
-    url(r'^(?P<todoitem_id>\d+)/do/$', 'todo.views.do', name='do'),
+            template_name='todo/item_detail.html'),
+        name='item_detail'),
+    url(r'^(?P<todolist_id>\d+)/items/create/$', 'todo.views.item_create', name='item_create'),
+    url(r'^/items/(?P<todoitem_id>\d+)/update/$', 'todo.views.item_update', name='item_update'),
+    url(r'^/items/(?P<todoitem_id>\d+)/delete/$', 'todo.views.item_delete', name='item_delete'),
+    url(r'^/items/(?P<todoitem_id>\d+)/do/$', 'todo.views.item_do', name='item_do')
 )
