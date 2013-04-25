@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     # Delivery of the static client
     static_client,
 
-    url(r'ttt/', include('todo.urls', namespace='todo')),
+    url(r'^todo/lists/', include('todo.urls', namespace='todo')),
 
     # REST API endpoints
     url(r'^rest/todo/', include('todo_api_piston.urls')),
