@@ -1,4 +1,4 @@
-<h1> Do you need to make a new list? </h1>
+<h1> Do you need to make a new list, user {{ request.user.id }}? </h1>
 <form action="{% url 'todo:list_create' %}" method="post">
 {% csrf_token %}
     <br>Title <input type="text" name="title" value="{{ todolist.title }}" /></br>
@@ -10,11 +10,18 @@
 {% if todolists %}
     <ul>
     {% for list in todolists %}
-        <div><a href="{% url 'todo:item_index' list.id %}">{{ list.title }}</a>
-             <br>{{ list.description }}</br>
-             <br>{{ list.todoitem_set.count }}</br>
-             <br><a href="{% url 'todo:list_delete' list.id %}">Delete</a>
-             </br>
+        <div><a href="{% url 'todo:item_index' list.id %}">{{ list.title }}</a>: {{ list.description }}
+             <br>Number of notes: {{ list.todoitem_set.count }}</br>
+             <br>{% if list.owner == request.user %}<strong> Yours</strong>
+                 {% else %}<strong> Shared </strong>{% endif %}</br>
+             {% if list.owner.id == request.user.id %}
+             <br><a href="{% url 'todo:list_delete' list.id %}">Delete</a></br>
+             <form action="{% url 'todo:list_share' list.id %}" method="post">
+              {% csrf_token %}
+             <br>Userid <input type="number" name="userid" value="" /></br>
+              <input type="submit" value="Add/Remove share" />
+             </form>
+             {% endif %}
         </div>
         <br></br>
         <br></br>
