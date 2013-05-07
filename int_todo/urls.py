@@ -25,4 +25,7 @@ urlpatterns = patterns('',
     # REST API endpoints
     url(r'^rest/todo/', include('todo_api_piston.urls')),
     url(r'^rest-empty/todo/', include('todo_api.urls')),
+
+    # User authentication
+    url('^accounts/', include('django.contrib.auth.urls')),
 )

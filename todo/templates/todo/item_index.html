@@ -4,6 +4,7 @@
     <div><a href="{% url 'todo:list_index' %}">See all lists</a>
 </div>
 
+{% if todolist.owner.id == request.user.id %}
 <h1> Don't forget to make a note! </h1>
 <form action="{% url 'todo:item_create' todolist.id %}" method="post">
 {% csrf_token %}
@@ -12,14 +13,17 @@
     <br>Done  <input type="checkbox" name="done" unchecked /></br>
 <input type="submit" value="Create" />
 </form>
+{% endif %} 
 
 <h1>Did you forget to</h1>
 {% if todos %}
     {% for todo in todos %}
         <div><a href="{% url 'todo:item_detail' todo.id %}">Order {{ todo.order }}: {{ todo.title }}</a>
              <br>{% if todo.done %} Already Done {% else %} It is time to do this {% endif %}</br>
-             <br><a href="{% url 'todo:item_do' todo.id %}">Mark as done</a> | 
-                 <a href="{% url 'todo:item_delete' todo.id %}">Delete</a>
+             <br><a href="{% url 'todo:item_do' todo.id %}">Mark as done</a>
+                {% if todolist.owner.id == request.user.id %}
+                 | <a href="{% url 'todo:item_delete' todo.id %}">Delete</a>
+                {% endif %} 
              </br>
         </div>
         <br></br>

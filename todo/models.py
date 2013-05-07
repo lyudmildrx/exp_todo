@@ -1,9 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class TodoList(models.Model):
     title = models.TextField()
     description = models.TextField()
+    owner = models.ForeignKey(User, related_name='owned_set')
+    shared_with = models.ManyToManyField(User, related_name='shared_lists')
 
     def to_json(self):
         """
@@ -13,7 +16,6 @@ class TodoList(models.Model):
             'title': self.title,
             'description': self.order,
         }
-        
 
 
 class TodoItem(models.Model):

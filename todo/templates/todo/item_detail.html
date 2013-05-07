@@ -1,3 +1,5 @@
+<div><a href="{% url 'todo:item_index' todoitem.todolist.id %}">Back to list</a>
+
 {% if message %}<p><strong>{{ message }}</strong></p>{% endif %}
     
 <form action="{% url 'todo:item_update' todoitem.id %}" method="post">
@@ -5,5 +7,9 @@
     <br>Title <input type="text" name="title" value="{{ todoitem.title }}" /></br>
     <br>Order <input type="number" name="order" value="{{ todoitem.order }}" /></br>
     <br>Done  <input type="checkbox" name="done" {% if todoitem.done %} checked {% endif %}/></br>
+{% if todoitem.todolist.owner.id == request.user.id %}
 <input type="submit" value="Update" />
+{% else %}
+You do not have permitions to change item.
+{% endif %}
 </form>
