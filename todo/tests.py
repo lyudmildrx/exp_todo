@@ -111,11 +111,8 @@ class TestTodoItem():
         item = create_todo(dummy_list, 'the title', 2, False)
         result = item.to_json()
         ntools.assert_equals(
-            result,
-            {'title': 'the title',
-             'order': 2,
-             'done': False}
-        )
+            result,'{"title": "the title","order": "2","done": "False"}'
+            )
 
 
 class TestTodoViews():
