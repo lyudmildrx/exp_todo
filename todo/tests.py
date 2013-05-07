@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from todo.models import TodoItem, TodoList
 from django.db.models import Q
 
+import code
+
 
 def create_list(owner, title, description, container=None):
     """
@@ -155,6 +157,8 @@ class TestTodoViews():
             Q(shared_with=helper.u1))
         res_ids = [_.id for _ in response.context['todolists']]
         loc_ids = [_.id for _ in lists]
+        res_ids.sort()
+        loc_ids.sort()
         ntools.assert_list_equal(res_ids, loc_ids)
         ntools.assert_in(reverse('todo:list_create'), response.content)
 
@@ -306,6 +310,11 @@ class TestTodoPermitions():
         helper.client.logout()
 
     def test_sharing(self):
+        """
+            Test (un)share own lists
+        """
+        todolist = TodoList.objects.get(pk=helper.u2l1.id)
+        ntools.assert_not_in(helper.u1.id, [_.id for _ in todolist.shared_with.all()])
         response = helper.client.post(
                         reverse('todo:list_share', args=(helper.u2l1.id,)),
                         {'userid': helper.u1.id})
@@ -329,12 +338,12 @@ class TestTodoPermitions():
                         {'userid': helper.u1.id,},
                     )
         ntools.assert_equal(response.status_code, 302)
-        ntools.assert_in('denied', response.content)
+        ntools.assert_in(reverse('todo:permitions_denied'), response.serialize_headers())
 
         # Can not delete anothers lists
         response = helper.client.post(reverse('todo:list_delete', args=(helper.u1l1.id,)))
         ntools.assert_equal(response.status_code, 302)
-        ntools.assert_in('', response.content)
+        ntools.assert_in(reverse('todo:permitions_denied'), response.serialize_headers())
 
         # Can mark as done anothers lists
         item = TodoItem.objects.get(pk=helper.u1l1i1.id)
@@ -346,8 +355,8 @@ class TestTodoPermitions():
         ntools.assert_equals(True, item.done)
 
         # Can not see datails of list if not shared with user
-        response = helper.client.get(reverse('todo:item_index', args=(helper.u1l1.id,)))
+        response = helper.client.get(reverse('todo:item_index', args=(helper.u1l2.id,)))
         ntools.assert_equal(response.status_code, 302)
         item = TodoItem.objects.get(pk=helper.u1l1i1.id)
-        ntools.assert_in('denied', response.content)
+        ntools.assert_in(reverse('todo:permitions_denied'), response.serialize_headers())
 
