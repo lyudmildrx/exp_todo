@@ -82,8 +82,8 @@ def list_create(request, **kwargs):
 @owns
 def list_delete(request, todolist_id, **kwargs):
     # Delete all items in list first
-    if 'todoitem' in kwargs.keys():
-        latelist = kwargs['todoitem']
+    if 'todolist' in kwargs.keys():
+        latelist = kwargs['todolist']
     else:
         latelist = get_object_or_404(TodoList, pk=todolist_id)
     latelist.delete()

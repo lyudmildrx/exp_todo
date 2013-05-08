@@ -15,7 +15,13 @@
              <br>{% if list.owner == request.user %}<strong> Yours</strong>
                  {% else %}<strong> Shared </strong>{% endif %}</br>
              {% if list.owner.id == request.user.id %}
-             <br><a href="{% url 'todo:list_delete' list.id %}">Delete</a></br>
+             <br>
+                <form action="{% url 'todo:list_delete' list.id %}" method='POST'>
+{% csrf_token %}
+                    <input type='hidden' name='action' value='delete'>
+                    <input type='submit' value='Delete'>
+                </form>
+            </br>
              <form action="{% url 'todo:list_share' list.id %}" method="post">
               {% csrf_token %}
              <br>Userid <input type="number" name="userid" value="" /></br>

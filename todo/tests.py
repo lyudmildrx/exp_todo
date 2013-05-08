@@ -189,6 +189,24 @@ class TestTodoViews():
         ntools.assert_equal(response.status_code, 302)
         ntools.assert_equal(lists, [])
 
+        # Delete a shared list
+        response = helper.client.post(
+                        reverse('todo:list_create'),
+                        {'title': 'Delete this soon',
+                         'description': 'Soonz',},
+                    )
+        lists = list(TodoList.objects.filter(title='Delete this soon'))
+        ntools.assert_equal(response.status_code, 302)
+        ntools.assert_not_equal(lists, [])
+        new_list = lists[0]
+        new_list.shared_with.add(helper.u2)
+
+        curr_list = lists.pop(0)
+        response = helper.client.post(reverse('todo:list_delete', args=(curr_list.id,)))
+        lists = list(TodoList.objects.filter(title='Delete this soon'))
+        ntools.assert_equal(response.status_code, 302)
+        ntools.assert_equal(lists, [])
+
 
     def item_index(self, list_id):
         """
