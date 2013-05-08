@@ -20,10 +20,17 @@
     {% for todo in todos %}
         <div><a href="{% url 'todo:item_detail' todo.id %}">Order {{ todo.order }}: {{ todo.title }}</a>
              <br>{% if todo.done %} Already Done {% else %} It is time to do this {% endif %}</br>
-             <br><a href="{% url 'todo:item_do' todo.id %}">Mark as done</a>
-                {% if todolist.owner.id == request.user.id %}
-                 | <a href="{% url 'todo:item_delete' todo.id %}">Delete</a>
-                {% endif %} 
+             <br>
+                <form action="{% url 'todo:item_do' todo.id %}" method='POST'>
+{% csrf_token %}
+                    <input type='hidden' name='action' value='delete'>
+                    <input type='submit' value='Mark as done'>
+                </form>
+                <form action="{% url 'todo:item_delete' todo.id %}" method='POST'>
+{% csrf_token %}
+                    <input type='hidden' name='action' value='delete'>
+                    <input type='submit' value='Delete'>
+                </form>
              </br>
         </div>
         <br></br>
