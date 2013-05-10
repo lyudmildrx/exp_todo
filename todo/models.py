@@ -12,10 +12,19 @@ class TodoList(models.Model):
         """
             Prepare structure to be serialized as json
         """
-        return {
-            'title': self.title,
-            'description': self.order,
-        }
+        return '{{"title": "{0}","description": "{1}"}}'.format(
+                self.title,
+                self.description,
+            )
+
+    def to_xml(self):
+        """
+            Prepare structure to be serialized as json
+        """
+        return '<xml>\n<title>{0}<\\title>\n<description>{1}<\description><\\xml>'.format(
+                self.title,
+                self.description,
+            )
 
 
 class TodoItem(models.Model):
@@ -39,8 +48,18 @@ class TodoItem(models.Model):
         """
             Prepare structure to be serialized as json
         """
-        return {
-            'title': self.title,
-            'order': self.order,
-            'done': self.done
-        }
+        return '{{\"title\": \"{0}\",\"order\": \"{1}\",\"done\": \"{2}\"}}'.format(
+                self.title,
+                self.order,
+                self.done,
+            )
+
+    def to_xml(self):
+        """
+            Prepare structure to be serialized as json
+        """
+        return '<xml>\n<title>{0}<\\title>\n<order>{1}<\order>\n<done>{2}<\done><\\xml>'.format(
+                self.title,
+                self.order,
+                self.done,
+            )
