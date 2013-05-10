@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'todo_api_piston',
     'todo_client',
     'south',
+    'tastypie',
 )
 
 # A sample logging configuration. The only tangible logging
